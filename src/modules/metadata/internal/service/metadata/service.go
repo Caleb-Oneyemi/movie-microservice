@@ -13,6 +13,7 @@ var ErrNotFound = errors.New("not found")
 // separate interface used here because repo can be memory or real db
 type metadataRepository interface {
 	Get(ctx context.Context, id string) (*models.MetaData, error)
+	Put(ctx context.Context, metadata *models.MetaData) error
 }
 
 type Service struct {
@@ -31,4 +32,8 @@ func (s *Service) Get(ctx context.Context, id string) (*models.MetaData, error) 
 	}
 
 	return res, nil
+}
+
+func (s *Service) Put(ctx context.Context, metadata *models.MetaData) error {
+	return s.repo.Put(ctx, metadata)
 }
