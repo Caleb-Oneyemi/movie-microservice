@@ -10,13 +10,13 @@ import (
 )
 
 func main() {
-	log.Println("metadata service starting up...")
+	log.Println("metadata service starting up on port 8081...")
 	repo := memory.New()
 	service := metadata.New(repo)
 	handler := httpHandler.New(service)
 
 	http.Handle("/api/v1/metadata", http.HandlerFunc(handler.Get))
-	if err := http.ListenAndServe(":7777", nil); err != nil {
+	if err := http.ListenAndServe(":8081", nil); err != nil {
 		panic(err)
 	}
 }

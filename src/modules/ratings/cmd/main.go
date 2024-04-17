@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	log.Println("ratings service starting up...")
+	log.Println("ratings service starting up on port 8082...")
 
 	repo := memory.New()
 	service := ratings.New(repo)

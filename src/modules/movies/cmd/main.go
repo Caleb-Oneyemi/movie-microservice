@@ -11,14 +11,14 @@ import (
 )
 
 func main() {
-	log.Println("Starting the movie service")
+	log.Println("movie gateway starting up on port on port 8083...")
 
 	metadataGateway := metadataGw.New("localhost:8081")
 	ratingGateway := ratingsGw.New("localhost:8082")
 
-	ctrl := movies.New(ratingGateway, metadataGateway)
+	srv := movies.New(ratingGateway, metadataGateway)
 
-	h := httpHandler.New(ctrl)
+	h := httpHandler.New(srv)
 	http.Handle("/movies", http.HandlerFunc(h.GetMovieDetails))
 	if err := http.ListenAndServe(":8083", nil); err != nil {
 		panic(err)
