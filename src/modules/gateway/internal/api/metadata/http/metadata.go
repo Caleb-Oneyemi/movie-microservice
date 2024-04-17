@@ -4,22 +4,33 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"math/rand"
 	"net/http"
 
 	api "moviemicroservice.com/src/modules/gateway/internal/api"
 	"moviemicroservice.com/src/modules/metadata/pkg/models"
+	"moviemicroservice.com/src/pkg/discovery"
 )
 
 type Api struct {
-	address string
+	registry discovery.Registry
 }
 
-func New(address string) *Api {
-	return &Api{address}
+func New(registry discovery.Registry) *Api {
+	return &Api{registry}
 }
 
 func (g *Api) Get(ctx context.Context, id string) (*models.MetaData, error) {
-	req, err := http.NewRequest(http.MethodGet, g.address+"/api/v1/metadata", nil)
+	addrs, err := g.registry.GetServiceAddresses(ctx, "metadata")
+	if err != nil {
+		return nil, err
+	}
+
+	//address at random index between 0 and addrs length
+	randomAddress := addrs[rand.Intn(len(addrs))]
+	url := "http://" + randomAddress + "/api/v1/metadata"
+
+	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
 	}

@@ -1,23 +1,61 @@
 package main
 
 import (
+	"context"
+	"flag"
+	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	httpHandler "moviemicroservice.com/src/modules/ratings/internal/handler/http"
 	"moviemicroservice.com/src/modules/ratings/internal/repository/memory"
 	"moviemicroservice.com/src/modules/ratings/internal/service/ratings"
+	"moviemicroservice.com/src/pkg/discovery"
+	"moviemicroservice.com/src/pkg/discovery/consul"
 )
 
+const serviceName = "ratings"
+
 func main() {
-	log.Println("ratings service starting up on port 8082...")
+	var port int
+	flag.IntVar(&port, "port", 8082, "ratings service port")
+	flag.Parse()
+
+	log.Printf("ratings service starting up on port %d...", port)
+
+	//start consul on localhost:8500
+	registry, err := consul.New("localhost:8500")
+	if err != nil {
+		panic(err)
+	}
+
+	ctx := context.Background()
+	instanceID := discovery.GenerateInstanceID(serviceName)
+	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("localhost:%d", port)); err != nil {
+		panic(err)
+	}
+
+	//continuously ping consul every 3 seconds in goroutine
+	go func() {
+		for {
+			if err := registry.ReportHealthyState(instanceID, serviceName); err != nil {
+				log.Println("Failed to report healthy state: " + err.Error())
+			}
+
+			time.Sleep(3 * time.Second)
+		}
+	}()
+
+	//deregister once process terminates
+	defer registry.Deregister(ctx, instanceID, serviceName)
 
 	repo := memory.New()
 	service := ratings.New(repo)
 	handler := httpHandler.New(service)
 
 	http.Handle("/api/v1/ratings", http.HandlerFunc(handler.Handle))
-	if err := http.ListenAndServe(":8082", nil); err != nil {
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil); err != nil {
 		panic(err)
 	}
 }

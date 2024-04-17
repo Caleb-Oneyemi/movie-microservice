@@ -21,7 +21,7 @@ type Registry interface {
 
 var ErrNotFound = errors.New("service addresses not found")
 
-func GenerateInstanceId(serviceName string) string {
+func GenerateInstanceID(serviceName string) string {
 	integer := rand.New(rand.NewSource(time.Now().UnixNano())).Int()
 	return fmt.Sprintf("%s-%d", serviceName, integer)
 }
