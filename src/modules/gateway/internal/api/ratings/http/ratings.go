@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 
@@ -29,6 +30,8 @@ func (g *Api) GetAggregatedRating(ctx context.Context, recordID models.RecordID,
 	//address at random index between 0 and addrs length
 	randomAddress := addrs[rand.Intn(len(addrs))]
 	url := "http://" + randomAddress + "/api/v1/ratings"
+
+	log.Printf("Calling ratings service. Request: GET " + url)
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
@@ -72,6 +75,8 @@ func (g *Api) PutRating(ctx context.Context, recordID models.RecordID, recordTyp
 	//address at random index between 0 and addrs length
 	randomAddress := addrs[rand.Intn(len(addrs))]
 	url := "http://" + randomAddress + "/api/v1/ratings"
+
+	log.Printf("Calling ratings service. Request: PUT " + url)
 
 	req, err := http.NewRequest(http.MethodPut, url, nil)
 	if err != nil {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 
@@ -29,6 +30,8 @@ func (g *Api) Get(ctx context.Context, id string) (*models.MetaData, error) {
 	//address at random index between 0 and addrs length
 	randomAddress := addrs[rand.Intn(len(addrs))]
 	url := "http://" + randomAddress + "/api/v1/metadata"
+
+	log.Printf("Calling metadata service. Request: GET " + url)
 
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
