@@ -4,36 +4,36 @@ import (
 	"context"
 	"errors"
 
+	api "moviemicroservice.com/src/modules/gateway/internal/api"
+	gatewayModel "moviemicroservice.com/src/modules/gateway/pkg/models"
 	metadataModel "moviemicroservice.com/src/modules/metadata/pkg/models"
-	"moviemicroservice.com/src/modules/movies/internal/gateway"
-	"moviemicroservice.com/src/modules/movies/pkg/models"
 	ratingModel "moviemicroservice.com/src/modules/ratings/pkg/models"
 )
 
 var ErrNotFound = errors.New("movie metadata not found")
 
 // no coupling with internal repos
-type ratingGateway interface {
+type ratingApi interface {
 	GetAggregatedRating(ctx context.Context, recordID ratingModel.RecordID, recordType ratingModel.RecordType) (float64, error)
 	PutRating(ctx context.Context, recordID ratingModel.RecordID, recordType ratingModel.RecordType, rating *ratingModel.Rating) error
 }
 
-type metadataGateway interface {
+type metadataApi interface {
 	Get(ctx context.Context, id string) (*metadataModel.MetaData, error)
 }
 
 type Service struct {
-	ratingGateway   ratingGateway
-	metadataGateway metadataGateway
+	ratingApi   ratingApi
+	metadataApi metadataApi
 }
 
-func New(ratingGateway ratingGateway, metadataGateway metadataGateway) *Service {
-	return &Service{ratingGateway, metadataGateway}
+func New(ratingApi ratingApi, metadataApi metadataApi) *Service {
+	return &Service{ratingApi, metadataApi}
 }
 
-func (s *Service) Get(ctx context.Context, id string) (*models.MovieDetails, error) {
-	metadata, err := s.metadataGateway.Get(ctx, id)
-	if err != nil && errors.Is(err, gateway.ErrNotFound) {
+func (s *Service) Get(ctx context.Context, id string) (*gatewayModel.MovieDetails, error) {
+	metadata, err := s.metadataApi.Get(ctx, id)
+	if err != nil && errors.Is(err, api.ErrNotFound) {
 		return nil, ErrNotFound
 	}
 
@@ -41,11 +41,11 @@ func (s *Service) Get(ctx context.Context, id string) (*models.MovieDetails, err
 		return nil, err
 	}
 
-	details := &models.MovieDetails{Metadata: *metadata}
-	rating, err := s.ratingGateway.GetAggregatedRating(ctx, ratingModel.RecordID(id), ratingModel.RecordTypeMovie)
+	details := &gatewayModel.MovieDetails{Metadata: *metadata}
+	rating, err := s.ratingApi.GetAggregatedRating(ctx, ratingModel.RecordID(id), ratingModel.RecordTypeMovie)
 
 	//ratings are just empty so return details with only metadata
-	if err != nil && !errors.Is(err, gateway.ErrNotFound) {
+	if err != nil && !errors.Is(err, api.ErrNotFound) {
 		return details, nil
 	}
 

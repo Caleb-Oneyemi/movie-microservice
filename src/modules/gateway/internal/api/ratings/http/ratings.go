@@ -6,19 +6,19 @@ import (
 	"fmt"
 	"net/http"
 
-	"moviemicroservice.com/src/modules/movies/internal/gateway"
+	api "moviemicroservice.com/src/modules/gateway/internal/api"
 	"moviemicroservice.com/src/modules/ratings/pkg/models"
 )
 
-type Gateway struct {
+type Api struct {
 	address string
 }
 
-func New(address string) *Gateway {
-	return &Gateway{address}
+func New(address string) *Api {
+	return &Api{address}
 }
 
-func (g *Gateway) GetAggregatedRating(ctx context.Context, recordID models.RecordID, recordType models.RecordType) (float64, error) {
+func (g *Api) GetAggregatedRating(ctx context.Context, recordID models.RecordID, recordType models.RecordType) (float64, error) {
 	req, err := http.NewRequest(http.MethodGet, g.address+"/api/v1/ratings", nil)
 	if err != nil {
 		return 0, err
@@ -39,7 +39,7 @@ func (g *Gateway) GetAggregatedRating(ctx context.Context, recordID models.Recor
 	defer resp.Body.Close()
 
 	if resp.StatusCode == http.StatusNotFound {
-		return 0, gateway.ErrNotFound
+		return 0, api.ErrNotFound
 	} else if resp.StatusCode/100 != 2 {
 		return 0, fmt.Errorf("non-2xx response: %v", resp)
 	}
@@ -52,7 +52,7 @@ func (g *Gateway) GetAggregatedRating(ctx context.Context, recordID models.Recor
 	return v, nil
 }
 
-func (g *Gateway) PutRating(ctx context.Context, recordID models.RecordID, recordType models.RecordType, rating *models.Rating) error {
+func (g *Api) PutRating(ctx context.Context, recordID models.RecordID, recordType models.RecordType, rating *models.Rating) error {
 	req, err := http.NewRequest(http.MethodPut, g.address+"/api/v1/ratings", nil)
 	if err != nil {
 		return err

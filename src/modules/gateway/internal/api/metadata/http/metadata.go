@@ -6,19 +6,19 @@ import (
 	"fmt"
 	"net/http"
 
+	api "moviemicroservice.com/src/modules/gateway/internal/api"
 	"moviemicroservice.com/src/modules/metadata/pkg/models"
-	"moviemicroservice.com/src/modules/movies/internal/gateway"
 )
 
-type Gateway struct {
+type Api struct {
 	address string
 }
 
-func New(address string) *Gateway {
-	return &Gateway{address}
+func New(address string) *Api {
+	return &Api{address}
 }
 
-func (g *Gateway) Get(ctx context.Context, id string) (*models.MetaData, error) {
+func (g *Api) Get(ctx context.Context, id string) (*models.MetaData, error) {
 	req, err := http.NewRequest(http.MethodGet, g.address+"/api/v1/metadata", nil)
 	if err != nil {
 		return nil, err
@@ -37,7 +37,7 @@ func (g *Gateway) Get(ctx context.Context, id string) (*models.MetaData, error) 
 
 	defer resp.Body.Close()
 	if resp.StatusCode == http.StatusNotFound {
-		return nil, gateway.ErrNotFound
+		return nil, api.ErrNotFound
 	} else if resp.StatusCode/100 != 2 {
 		return nil, fmt.Errorf("non-2xx response: %v", resp)
 	}

@@ -6,14 +6,14 @@ import (
 	"log"
 	"net/http"
 
-	"moviemicroservice.com/src/modules/movies/internal/services/movies"
+	gateway "moviemicroservice.com/src/modules/gateway/internal/services/movies"
 )
 
 type Handler struct {
-	service *movies.Service
+	service *gateway.Service
 }
 
-func New(service *movies.Service) *Handler {
+func New(service *gateway.Service) *Handler {
 	return &Handler{service}
 }
 
@@ -21,7 +21,7 @@ func (h *Handler) GetMovieDetails(w http.ResponseWriter, req *http.Request) {
 	id := req.FormValue("id")
 	details, err := h.service.Get(req.Context(), id)
 
-	if err != nil && errors.Is(err, movies.ErrNotFound) {
+	if err != nil && errors.Is(err, gateway.ErrNotFound) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
