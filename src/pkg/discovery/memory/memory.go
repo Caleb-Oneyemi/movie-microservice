@@ -75,7 +75,7 @@ func (r *Registry) ReportHealthyState(instanceID InstanceID, serviceName Service
 	return nil
 }
 
-func (r *Registry) ServiceAddresses(ctx context.Context, serviceName ServiceName) ([]string,
+func (r *Registry) GetServiceAddresses(ctx context.Context, serviceName ServiceName) ([]string,
 	error) {
 	r.RLock()
 
