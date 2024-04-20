@@ -15,6 +15,9 @@ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 # export PATH
 export PATH="$PATH:$(go env GOPATH)/bin"
 
-# run from the root of the project
+# run from the root of the project. generates movie.pb.go
 protoc -I=./src/contracts --go_out=./src movie.proto
+
+# run from the root of the project. generates movie_grpc.pb.go
+protoc -I=./src/contracts --go_out=./src --go-grpc_out=./src movie.proto
 ```
