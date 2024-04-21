@@ -14,8 +14,7 @@ var ErrNotFound = errors.New("movie metadata not found")
 
 // no coupling with internal repos
 type ratingApi interface {
-	GetAggregatedRating(ctx context.Context, recordID ratingModel.RecordID, recordType ratingModel.RecordType) (float64, error)
-	PutRating(ctx context.Context, recordID ratingModel.RecordID, recordType ratingModel.RecordType, rating *ratingModel.Rating) error
+	GetAggregatedRatings(ctx context.Context, recordID ratingModel.RecordID, recordType ratingModel.RecordType) (float64, error)
 }
 
 type metadataApi interface {
@@ -42,7 +41,7 @@ func (s *Service) Get(ctx context.Context, id string) (*gatewayModel.MovieDetail
 	}
 
 	details := &gatewayModel.MovieDetails{Metadata: *metadata}
-	rating, err := s.ratingApi.GetAggregatedRating(ctx, ratingModel.RecordID(id), ratingModel.RecordTypeMovie)
+	rating, err := s.ratingApi.GetAggregatedRatings(ctx, ratingModel.RecordID(id), ratingModel.RecordTypeMovie)
 
 	//ratings are just empty so return details with only metadata
 	if err != nil && !errors.Is(err, api.ErrNotFound) {

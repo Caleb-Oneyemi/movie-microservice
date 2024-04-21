@@ -14,7 +14,7 @@ type Registry interface {
 	//deregister instance
 	Deregister(ctx context.Context, instanceID string, serviceName string) error
 	//get addresses for all service instances
-	GetServiceAddresses(ctx context.Context, serviceID string) ([]string, error)
+	GetServiceAddresses(ctx context.Context, serviceName string) ([]string, error)
 	//notify registry of instance healthy state
 	ReportHealthyState(instanceID string, serviceName string) error
 }
