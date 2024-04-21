@@ -15,12 +15,17 @@ type ratingsRepository interface {
 	Put(ctx context.Context, recordType models.RecordType, recordId models.RecordID, rating *models.Rating) error
 }
 
-type Service struct {
-	repo ratingsRepository
+type ratingsIngester interface {
+	Ingest(ctx context.Context) (chan models.RatingEvent, error)
 }
 
-func New(repo ratingsRepository) *Service {
-	return &Service{repo}
+type Service struct {
+	repo     ratingsRepository
+	ingester ratingsIngester
+}
+
+func New(repo ratingsRepository, ingester ratingsIngester) *Service {
+	return &Service{repo, ingester}
 }
 
 func (s *Service) Put(ctx context.Context, recordType models.RecordType, recordId models.RecordID, rating *models.Rating) error {
@@ -39,4 +44,19 @@ func (s *Service) GetAggregatedRatings(ctx context.Context, recordType models.Re
 	}
 
 	return sum / float64(len(ratings)), nil
+}
+
+func (s *Service) StartIngestion(ctx context.Context) error {
+	ch, err := s.ingester.Ingest(ctx)
+	if err != nil {
+		return err
+	}
+
+	for event := range ch {
+		if err := s.Put(ctx, event.RecordType, event.RecordID, &models.Rating{UserID: string(event.UserID), Value: event.Value}); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
