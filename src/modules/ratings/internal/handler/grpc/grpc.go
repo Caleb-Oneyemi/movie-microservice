@@ -22,7 +22,7 @@ func New(service *ratings.Service) *Handler {
 
 func (h *Handler) GetAggregatedRatings(ctx context.Context, req *gen.GetAggregatedRatingsRequest) (*gen.GetAggregatedRatingsResponse, error) {
 	if req == nil || req.RecordId == "" || req.RecordType == "" {
-		return nil, status.Errorf(codes.InvalidArgument, "missing record id or record type in request")
+		return nil, status.Errorf(codes.InvalidArgument, "record id and record type must be in request")
 	}
 
 	m, err := h.service.GetAggregatedRatings(ctx, models.RecordType(req.RecordType), models.RecordID(req.RecordId))
@@ -35,4 +35,16 @@ func (h *Handler) GetAggregatedRatings(ctx context.Context, req *gen.GetAggregat
 	}
 
 	return &gen.GetAggregatedRatingsResponse{Value: m}, nil
+}
+
+func (h *Handler) PutRating(ctx context.Context, req *gen.PutRatingRequest) (*gen.PutRatingResponse, error) {
+	if req == nil || req.RecordId == "" || req.RecordType == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "record id and record type must be in request")
+	}
+
+	if err := h.service.Put(ctx, models.RecordType(req.RecordType), models.RecordID(req.RecordId), &models.Rating{UserID: string(req.UserId), Value: models.RatingValue(req.RatingValue)}); err != nil {
+		return nil, err
+	}
+
+	return &gen.PutRatingResponse{}, nil
 }
