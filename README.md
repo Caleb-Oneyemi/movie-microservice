@@ -1,6 +1,6 @@
 # movie-microservice
 
-A WIP go microservice for movie metadata and ratings.
+A sample go microservice for movie metadata and ratings.
 
 ## Requirements
 
