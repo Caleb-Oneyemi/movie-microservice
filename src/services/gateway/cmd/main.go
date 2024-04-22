@@ -2,14 +2,15 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"log"
 	"net"
+	"os"
 	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"gopkg.in/yaml.v3"
 	"moviemicroservice.com/src/gen"
 	"moviemicroservice.com/src/pkg/discovery"
 	"moviemicroservice.com/src/pkg/discovery/consul"
@@ -22,11 +23,18 @@ import (
 const serviceName = "gateway"
 
 func main() {
-	var port int
-	flag.IntVar(&port, "port", 8083, "API handler port")
-	flag.Parse()
+	f, err := os.Open("../config/base.yaml")
+	if err != nil {
+		panic(err)
+	}
 
-	log.Printf("Starting the movie service on port %d", port)
+	var config Config
+	if err := yaml.NewDecoder(f).Decode(&config); err != nil {
+		panic(err)
+	}
+
+	port := config.Api.Port
+	log.Printf("Starting the gateway service on port %d", port)
 
 	//start consul on localhost:8500
 	registry, err := consul.New("localhost:8500")

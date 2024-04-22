@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"flag"
 	"fmt"
 	"log"
 	"net"
@@ -11,6 +10,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
+	"gopkg.in/yaml.v3"
 	"moviemicroservice.com/src/gen"
 	"moviemicroservice.com/src/pkg/discovery"
 	"moviemicroservice.com/src/pkg/discovery/consul"
@@ -22,9 +22,17 @@ import (
 const serviceName = "metadata"
 
 func main() {
-	var port int
-	flag.IntVar(&port, "port", 8081, "metadata service port")
-	flag.Parse()
+	f, err := os.Open("../config/base.yaml")
+	if err != nil {
+		panic(err)
+	}
+
+	var config Config
+	if err := yaml.NewDecoder(f).Decode(&config); err != nil {
+		panic(err)
+	}
+
+	port := config.Api.Port
 
 	log.Printf("metadata service starting up on port %d...", port)
 
