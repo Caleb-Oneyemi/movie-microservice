@@ -23,6 +23,11 @@ func New(ctx context.Context, connString string) (*Repository, error) {
 	return &Repository{db: conn}, nil
 }
 
+func (r *Repository) CloseConnection(ctx context.Context) {
+	println("closing connection")
+	r.db.Close()
+}
+
 func (r *Repository) Get(ctx context.Context, recordType models.RecordType, recordId models.RecordID) ([]models.Rating, error) {
 	query := "SELECT user_id, value FROM ratings WHERE record_id = $1 AND record_type = $2"
 

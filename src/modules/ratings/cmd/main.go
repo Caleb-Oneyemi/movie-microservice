@@ -6,12 +6,14 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 	"time"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"moviemicroservice.com/src/gen"
 	grpcHandler "moviemicroservice.com/src/modules/ratings/internal/handler/grpc"
-	"moviemicroservice.com/src/modules/ratings/internal/repository/memory"
+	"moviemicroservice.com/src/modules/ratings/internal/repository/pg"
 	"moviemicroservice.com/src/modules/ratings/internal/service/ratings"
 	"moviemicroservice.com/src/pkg/discovery"
 	"moviemicroservice.com/src/pkg/discovery/consul"
@@ -52,7 +54,18 @@ func main() {
 	//deregister once process terminates
 	defer registry.Deregister(ctx, instanceID, serviceName)
 
-	repo := memory.New()
+	db_ctx := context.Background()
+
+	db_url := os.Getenv("RATINGS_DB_URL")
+	repo, err := pg.New(db_ctx, db_url)
+	if err != nil {
+		panic(err)
+	}
+
+	println("ratings db connection successful")
+
+	defer repo.CloseConnection(db_ctx)
+
 	service := ratings.New(repo, nil)
 	handler := grpcHandler.New(service)
 
@@ -62,6 +75,8 @@ func main() {
 	}
 
 	server := grpc.NewServer()
+	reflection.Register(server)
+
 	gen.RegisterRatingServiceServer(server, handler)
 	server.Serve(listener)
 }

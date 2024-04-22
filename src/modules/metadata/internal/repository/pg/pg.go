@@ -23,7 +23,11 @@ func New(ctx context.Context, connString string) (*Repository, error) {
 	return &Repository{db: conn}, nil
 }
 
-func (r *Repository) GetById(ctx context.Context, id string) (*models.MetaData, error) {
+func (r *Repository) CloseConnection(ctx context.Context) {
+	r.db.Close()
+}
+
+func (r *Repository) Get(ctx context.Context, id string) (*models.MetaData, error) {
 	var title, description, director string
 
 	row := r.db.QueryRow(ctx, "SELECT title, description, director FROM metadata WHERE id = ?", id)
@@ -45,11 +49,11 @@ func (r *Repository) GetById(ctx context.Context, id string) (*models.MetaData, 
 }
 
 // adds movie metadata for a given movie id. should align with gPRC response type which is empty
-func (r *Repository) Put(ctx context.Context, id string, data *models.MetaData) error {
+func (r *Repository) Put(ctx context.Context, data *models.MetaData) error {
 	_, err := r.db.Exec(
 		ctx,
 		"INSERT INTO metadata (id, title, description, director) VALUES ($1, $2, $3, $4)",
-		id, data.Title, data.Description, data.Director,
+		data.ID, data.Title, data.Description, data.Director,
 	)
 
 	if err != nil {

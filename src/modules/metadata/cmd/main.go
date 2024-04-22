@@ -6,12 +6,14 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"os"
 	"time"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"moviemicroservice.com/src/gen"
 	grpcHandler "moviemicroservice.com/src/modules/metadata/internal/handler/grpc"
-	"moviemicroservice.com/src/modules/metadata/internal/repository/memory"
+	"moviemicroservice.com/src/modules/metadata/internal/repository/pg"
 	"moviemicroservice.com/src/modules/metadata/internal/service/metadata"
 	"moviemicroservice.com/src/pkg/discovery"
 	"moviemicroservice.com/src/pkg/discovery/consul"
@@ -52,7 +54,18 @@ func main() {
 	//deregister once process terminates
 	defer registry.Deregister(ctx, instanceID, serviceName)
 
-	repo := memory.New()
+	db_ctx := context.Background()
+
+	db_url := os.Getenv("METADATA_DB_URL")
+	repo, err := pg.New(db_ctx, db_url)
+	if err != nil {
+		panic(err)
+	}
+
+	println("metadata db connection successful")
+
+	defer repo.CloseConnection(db_ctx)
+
 	service := metadata.New(repo)
 	handler := grpcHandler.New(service)
 
@@ -62,6 +75,8 @@ func main() {
 	}
 
 	server := grpc.NewServer()
+	reflection.Register(server)
+
 	gen.RegisterMetadataServiceServer(server, handler)
 	server.Serve(listener)
 }

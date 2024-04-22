@@ -34,7 +34,11 @@ func (s *Service) Put(ctx context.Context, recordType models.RecordType, recordI
 
 func (s *Service) GetAggregatedRatings(ctx context.Context, recordType models.RecordType, recordId models.RecordID) (float64, error) {
 	ratings, err := s.repo.Get(ctx, recordType, recordId)
-	if err != nil && errors.Is(err, repository.ErrNotFound) {
+	if err != nil && err == repository.ErrNotFound {
+		return 0, ErrNotFound
+	}
+
+	if err != nil {
 		return 0, err
 	}
 
