@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	"moviemicroservice.com/src/modules/ratings/pkg/models"
+	"moviemicroservice.com/src/services/ratings/pkg/models"
 )
 
 func main() {
