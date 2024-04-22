@@ -24,10 +24,10 @@ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 export PATH="$PATH:$(go env GOPATH)/bin"
 
 # run from the root of the project. generates movie.pb.go
-protoc -I=./src/contracts --go_out=./src movie.proto
+protoc -I=./contracts --go_out=. movie.proto
 
 # run from the root of the project. generates movie_grpc.pb.go
-protoc -I=./src/contracts --go_out=./src --go-grpc_out=./src movie.proto
+protoc -I=./contracts --go_out=. --go-grpc_out=. movie.proto
 ```
 
 ## Calling gRPC Servers
