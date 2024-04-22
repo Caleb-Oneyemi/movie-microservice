@@ -53,7 +53,7 @@ func main() {
 	defer registry.Deregister(ctx, instanceID, serviceName)
 
 	repo := memory.New()
-	service := ratings.New(repo)
+	service := ratings.New(repo, nil)
 	handler := grpcHandler.New(service)
 
 	listener, err := net.Listen("tcp", fmt.Sprintf("localhost:%v", port))

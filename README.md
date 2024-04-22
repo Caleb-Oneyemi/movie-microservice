@@ -29,3 +29,12 @@ protoc -I=./src/contracts --go_out=./src movie.proto
 # run from the root of the project. generates movie_grpc.pb.go
 protoc -I=./src/contracts --go_out=./src --go-grpc_out=./src movie.proto
 ```
+
+## Calling gRPC Servers
+
+Install grpcurl CLI
+
+```sh
+# basically curl for gRPC servers
+brew install grpcurl
+```
