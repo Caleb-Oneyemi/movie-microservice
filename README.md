@@ -37,4 +37,7 @@ Install grpcurl CLI
 ```sh
 # basically curl for gRPC servers
 brew install grpcurl
+
+# sample usage
+grpcurl -plaintext -d '{"record_id":"1", "record_type": "movie"}' localhost:8082 RatingService/GetAggregatedRatings
 ```
