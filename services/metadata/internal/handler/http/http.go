@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	"moviemicroservice.com/src/services/metadata/internal/repository"
-	"moviemicroservice.com/src/services/metadata/internal/service/metadata"
+	"moviemicroservice.com/services/metadata/internal/repository"
+	"moviemicroservice.com/services/metadata/internal/service/metadata"
 )
 
 type Handler struct {

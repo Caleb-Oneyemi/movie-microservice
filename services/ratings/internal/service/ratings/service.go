@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"moviemicroservice.com/src/services/ratings/internal/repository"
-	"moviemicroservice.com/src/services/ratings/pkg/models"
+	"moviemicroservice.com/services/ratings/internal/repository"
+	"moviemicroservice.com/services/ratings/pkg/models"
 )
 
 var ErrNotFound = errors.New("ratings not found for a record")

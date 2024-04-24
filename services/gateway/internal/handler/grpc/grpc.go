@@ -6,9 +6,9 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"moviemicroservice.com/src/gen"
-	"moviemicroservice.com/src/services/gateway/internal/services/movies"
-	"moviemicroservice.com/src/services/metadata/pkg/models"
+	"moviemicroservice.com/gen"
+	"moviemicroservice.com/services/gateway/internal/services/movies"
+	"moviemicroservice.com/services/metadata/pkg/models"
 )
 
 // defines a movie gRPC handler.

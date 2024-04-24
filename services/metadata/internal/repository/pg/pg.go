@@ -6,8 +6,8 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-	"moviemicroservice.com/src/services/metadata/internal/repository"
-	"moviemicroservice.com/src/services/metadata/pkg/models"
+	"moviemicroservice.com/services/metadata/internal/repository"
+	"moviemicroservice.com/services/metadata/pkg/models"
 )
 
 type Repository struct {

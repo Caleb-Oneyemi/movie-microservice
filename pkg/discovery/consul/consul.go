@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	consul "github.com/hashicorp/consul/api"
-	"moviemicroservice.com/src/pkg/discovery"
+	"moviemicroservice.com/pkg/discovery"
 )
 
 // defines a consul based registry implementation

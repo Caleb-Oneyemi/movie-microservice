@@ -6,7 +6,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"moviemicroservice.com/src/pkg/discovery"
+	"moviemicroservice.com/pkg/discovery"
 )
 
 // selects a random service instance and returns a connection to ir

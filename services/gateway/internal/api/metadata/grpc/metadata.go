@@ -3,10 +3,10 @@ package grpc
 import (
 	"context"
 
-	"moviemicroservice.com/src/gen"
-	grpcUtils "moviemicroservice.com/src/internal/utils"
-	"moviemicroservice.com/src/pkg/discovery"
-	"moviemicroservice.com/src/services/metadata/pkg/models"
+	"moviemicroservice.com/gen"
+	grpcUtils "moviemicroservice.com/internal/utils"
+	"moviemicroservice.com/pkg/discovery"
+	"moviemicroservice.com/services/metadata/pkg/models"
 )
 
 type Api struct {

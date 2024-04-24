@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	gateway "moviemicroservice.com/src/services/gateway/internal/services/movies"
+	gateway "moviemicroservice.com/services/gateway/internal/services/movies"
 )
 
 type Handler struct {

@@ -3,8 +3,8 @@ package memory
 import (
 	"context"
 
-	"moviemicroservice.com/src/services/ratings/internal/repository"
-	"moviemicroservice.com/src/services/ratings/pkg/models"
+	"moviemicroservice.com/services/ratings/internal/repository"
+	"moviemicroservice.com/services/ratings/pkg/models"
 )
 
 type Repository struct {

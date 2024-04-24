@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
-	"moviemicroservice.com/src/services/ratings/pkg/models"
+	"moviemicroservice.com/services/ratings/pkg/models"
 )
 
 type Ingester struct {

@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 
-	api "moviemicroservice.com/src/services/gateway/internal/api"
-	gatewayModel "moviemicroservice.com/src/services/gateway/pkg/models"
-	metadataModel "moviemicroservice.com/src/services/metadata/pkg/models"
-	ratingModel "moviemicroservice.com/src/services/ratings/pkg/models"
+	api "moviemicroservice.com/services/gateway/internal/api"
+	gatewayModel "moviemicroservice.com/services/gateway/pkg/models"
+	metadataModel "moviemicroservice.com/services/metadata/pkg/models"
+	ratingModel "moviemicroservice.com/services/ratings/pkg/models"
 )
 
 var ErrNotFound = errors.New("movie metadata not found")

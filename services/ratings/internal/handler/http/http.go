@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"strconv"
 
-	"moviemicroservice.com/src/services/ratings/internal/repository"
-	"moviemicroservice.com/src/services/ratings/internal/service/ratings"
-	"moviemicroservice.com/src/services/ratings/pkg/models"
+	"moviemicroservice.com/services/ratings/internal/repository"
+	"moviemicroservice.com/services/ratings/internal/service/ratings"
+	"moviemicroservice.com/services/ratings/pkg/models"
 )
 
 type Handler struct {

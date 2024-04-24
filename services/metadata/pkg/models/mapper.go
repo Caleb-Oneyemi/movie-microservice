@@ -1,6 +1,6 @@
 package models
 
-import "moviemicroservice.com/src/gen"
+import "moviemicroservice.com/gen"
 
 func MetadataToProto(m *MetaData) *gen.Metadata {
 	return &gen.Metadata{

@@ -11,12 +11,12 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"gopkg.in/yaml.v3"
-	"moviemicroservice.com/src/gen"
-	"moviemicroservice.com/src/pkg/discovery"
-	"moviemicroservice.com/src/pkg/discovery/consul"
-	grpcHandler "moviemicroservice.com/src/services/ratings/internal/handler/grpc"
-	"moviemicroservice.com/src/services/ratings/internal/repository/pg"
-	"moviemicroservice.com/src/services/ratings/internal/service/ratings"
+	"moviemicroservice.com/gen"
+	"moviemicroservice.com/pkg/discovery"
+	"moviemicroservice.com/pkg/discovery/consul"
+	grpcHandler "moviemicroservice.com/services/ratings/internal/handler/grpc"
+	"moviemicroservice.com/services/ratings/internal/repository/pg"
+	"moviemicroservice.com/services/ratings/internal/service/ratings"
 )
 
 const serviceName = "ratings"

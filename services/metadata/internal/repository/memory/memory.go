@@ -4,8 +4,8 @@ import (
 	"context"
 	"sync"
 
-	"moviemicroservice.com/src/services/metadata/internal/repository"
-	"moviemicroservice.com/src/services/metadata/pkg/models"
+	"moviemicroservice.com/services/metadata/internal/repository"
+	"moviemicroservice.com/services/metadata/pkg/models"
 )
 
 type Repository struct {

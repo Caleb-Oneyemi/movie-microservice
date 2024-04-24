@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"moviemicroservice.com/src/services/metadata/internal/repository"
-	"moviemicroservice.com/src/services/metadata/pkg/models"
+	"moviemicroservice.com/services/metadata/internal/repository"
+	"moviemicroservice.com/services/metadata/pkg/models"
 )
 
 var ErrNotFound = errors.New("not found")

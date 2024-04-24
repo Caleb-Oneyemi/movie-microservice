@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	"moviemicroservice.com/src/services/ratings/internal/repository"
-	"moviemicroservice.com/src/services/ratings/pkg/models"
+	"moviemicroservice.com/services/ratings/internal/repository"
+	"moviemicroservice.com/services/ratings/pkg/models"
 )
 
 type Repository struct {

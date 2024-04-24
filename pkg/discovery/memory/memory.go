@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"moviemicroservice.com/src/pkg/discovery"
+	"moviemicroservice.com/pkg/discovery"
 )
 
 type ServiceName string

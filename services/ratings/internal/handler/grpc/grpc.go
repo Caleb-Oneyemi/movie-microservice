@@ -6,9 +6,9 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"moviemicroservice.com/src/gen"
-	"moviemicroservice.com/src/services/ratings/internal/service/ratings"
-	"moviemicroservice.com/src/services/ratings/pkg/models"
+	"moviemicroservice.com/gen"
+	"moviemicroservice.com/services/ratings/internal/service/ratings"
+	"moviemicroservice.com/services/ratings/pkg/models"
 )
 
 type Handler struct {

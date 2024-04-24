@@ -11,12 +11,12 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"gopkg.in/yaml.v3"
-	"moviemicroservice.com/src/gen"
-	"moviemicroservice.com/src/pkg/discovery"
-	"moviemicroservice.com/src/pkg/discovery/consul"
-	grpcHandler "moviemicroservice.com/src/services/metadata/internal/handler/grpc"
-	"moviemicroservice.com/src/services/metadata/internal/repository/pg"
-	"moviemicroservice.com/src/services/metadata/internal/service/metadata"
+	"moviemicroservice.com/gen"
+	"moviemicroservice.com/pkg/discovery"
+	"moviemicroservice.com/pkg/discovery/consul"
+	grpcHandler "moviemicroservice.com/services/metadata/internal/handler/grpc"
+	"moviemicroservice.com/services/metadata/internal/repository/pg"
+	"moviemicroservice.com/services/metadata/internal/service/metadata"
 )
 
 const serviceName = "metadata"

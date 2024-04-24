@@ -8,9 +8,9 @@ import (
 	"math/rand"
 	"net/http"
 
-	"moviemicroservice.com/src/pkg/discovery"
-	api "moviemicroservice.com/src/services/gateway/internal/api"
-	"moviemicroservice.com/src/services/ratings/pkg/models"
+	"moviemicroservice.com/pkg/discovery"
+	api "moviemicroservice.com/services/gateway/internal/api"
+	"moviemicroservice.com/services/ratings/pkg/models"
 )
 
 type Api struct {
