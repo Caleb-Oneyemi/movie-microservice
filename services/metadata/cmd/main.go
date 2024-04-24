@@ -6,6 +6,9 @@ import (
 	"log"
 	"net"
 	"os"
+	"os/signal"
+	"sync"
+	"syscall"
 	"time"
 
 	"google.golang.org/grpc"
@@ -42,7 +45,7 @@ func main() {
 		panic(err)
 	}
 
-	ctx := context.Background()
+	ctx, cancel := context.WithCancel(context.Background())
 	instanceID := discovery.GenerateInstanceID(serviceName)
 	if err := registry.Register(ctx, instanceID, serviceName, fmt.Sprintf("localhost:%d", port)); err != nil {
 		panic(err)
@@ -62,7 +65,7 @@ func main() {
 	//deregister once process terminates
 	defer registry.Deregister(ctx, instanceID, serviceName)
 
-	db_ctx := context.Background()
+	db_ctx, db_cancel := context.WithCancel(context.Background())
 
 	db_url := os.Getenv("METADATA_DB_URL")
 	repo, err := pg.New(db_ctx, db_url)
@@ -84,7 +87,25 @@ func main() {
 
 	server := grpc.NewServer()
 	reflection.Register(server)
-
 	gen.RegisterMetadataServiceServer(server, handler)
-	server.Serve(listener)
+
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+	var wg sync.WaitGroup
+	wg.Add(1)
+
+	go func() {
+		defer wg.Done()
+		s := <-sigChan
+		cancel()
+		db_cancel()
+		log.Printf("Received signal %v, attempting graceful shutdown", s)
+		server.GracefulStop()
+		log.Println("Gracefully stopped the metadata service")
+	}()
+
+	if err := server.Serve(listener); err != nil {
+		panic(err)
+	}
+	wg.Wait()
 }
