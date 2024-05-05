@@ -1,6 +1,13 @@
 # movie-microservice
 
-A sample go microservice for movie metadata and ratings.
+A sample go microservice.
+
+## Stack:
+
+- [Go](https://go.dev/)
+- [pgx](https://github.com/jackc/pgx)
+- [Consul](https://github.com/hashicorp/consul)
+- [gRPC](https://github.com/grpc/grpc-go)
 
 ## Requirements
 
